@@ -29,6 +29,8 @@
       height: 80%;
       object-fit: cover;
       border-radius: 15px;
+      /* 🛡 Prevent right-click download */
+      pointer-events: none;
     }
 
     #playBtn {
@@ -50,7 +52,7 @@
       transform: scale(1.05);
     }
 
-    /* ✅ MOBILE FIX (Only for small screens) */
+    /* ✅ MOBILE FIX */
     @media (max-width: 768px) {
       video {
         width: 95%;
@@ -82,24 +84,29 @@
 </head>
 <body>
 
-  <video id="toyVideo" src="abutoys.mp4" autoplay loop muted playsinline></video>
+  <!-- 🔒 "controlsList" removes download & PiP options -->
+  <video id="toyVideo" src="abutoys.mp4" autoplay loop muted playsinline controls controlsList="nodownload noremoteplayback noplaybackrate"></video>
+  
   <button id="playBtn">🔊 Tap to Enable Sound</button>
 
   <script>
     const btn = document.getElementById("playBtn");
     const video = document.getElementById("toyVideo");
 
-    // Video starts silently
+    // Start muted
     video.muted = true;
     video.play().catch(err => console.log("Autoplay blocked:", err));
 
-    // On tap — unmute + show controls
+    // Disable right-click context menu
+    video.addEventListener("contextmenu", e => e.preventDefault());
+
+    // On tap — unmute
     btn.addEventListener("click", async () => {
       try {
         video.muted = false;
         video.controls = true;
         await video.play();
-        btn.style.display = "none"; // Hide button after enabling sound
+        btn.style.display = "none";
       } catch (err) {
         console.error("Playback error:", err);
       }
