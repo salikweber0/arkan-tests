@@ -10,17 +10,14 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       height: 100vh;
-      width: 100vw;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #fff5f8;
+      background: #fefefe;
       overflow: hidden;
       position: relative;
-      font-family: 'Poppins', sans-serif;
     }
 
     video {
@@ -28,12 +25,10 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 90vw;
-      height: auto;
-      max-height: 80vh;
-      border-radius: 15px;
+      width: 60%;
+      height: 80%;
       object-fit: cover;
-      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+      border-radius: 15px;
     }
 
     #playBtn {
@@ -42,45 +37,45 @@
       padding: 14px 40px;
       font-size: 20px;
       border: none;
-      background: rgba(255, 130, 166, 0.95);
+      background: rgba(255, 130, 166, 0.9);
       color: white;
       border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      backdrop-filter: blur(4px);
     }
 
     #playBtn:hover {
-      background: rgba(255, 90, 138, 1);
+      background: rgba(255, 90, 138, 0.95);
       transform: scale(1.05);
     }
 
-    /* ✅ Mobile Optimization */
+    /* ✅ MOBILE FIX (Only for small screens) */
     @media (max-width: 768px) {
       video {
-        width: 95vw;
-        max-height: 75vh;
+        width: 95%;
+        height: auto;
+        max-height: 75%;
         border-radius: 10px;
       }
 
       #playBtn {
         font-size: 16px;
-        padding: 12px 25px;
+        padding: 10px 25px;
       }
     }
 
     @media (max-width: 480px) {
       video {
-        width: 100vw;
+        width: 100%;
         height: auto;
-        max-height: 70vh;
+        max-height: 70%;
         border-radius: 8px;
       }
 
       #playBtn {
         font-size: 15px;
-        padding: 10px 20px;
+        padding: 8px 20px;
       }
     }
   </style>
@@ -94,17 +89,17 @@
     const btn = document.getElementById("playBtn");
     const video = document.getElementById("toyVideo");
 
-    // Video starts muted by default
+    // Video starts silently
     video.muted = true;
-    video.play().catch(err => console.log("Autoplay prevented:", err));
+    video.play().catch(err => console.log("Autoplay blocked:", err));
 
-    // On tap, unmute and show controls
+    // On tap — unmute + show controls
     btn.addEventListener("click", async () => {
       try {
         video.muted = false;
         video.controls = true;
         await video.play();
-        btn.style.display = "none"; // Hide button
+        btn.style.display = "none"; // Hide button after enabling sound
       } catch (err) {
         console.error("Playback error:", err);
       }
