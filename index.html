@@ -5,50 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Animated Video with Sound</title>
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       background: #fefefe;
       overflow: hidden;
-      flex-direction: column;
+      position: relative;
     }
+
     video {
-      width: 100%;
-      max-width: 900px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 80%;
+      object-fit: cover;
       border-radius: 15px;
-      display: none;
     }
-    button {
-      padding: 12px 30px;
-      font-size: 18px;
+
+    #playBtn {
+      position: absolute;
+      z-index: 10;
+      padding: 14px 40px;
+      font-size: 20px;
       border: none;
-      background: #ff82a6;
+      background: rgba(255, 130, 166, 0.9);
       color: white;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       transition: 0.3s;
+      backdrop-filter: blur(4px);
     }
-    button:hover {
-      background: #ff5a8a;
+
+    #playBtn:hover {
+      background: rgba(255, 90, 138, 0.95);
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <button id="playBtn">▶️ Tap to Play Video with Sound</button>
-  <video id="toyVideo" src="abutoys2.mp4" loop controls></video>
+
+  <video id="toyVideo" src="abutoys.mp4" autoplay loop muted playsinline></video>
+  <button id="playBtn">🔊 Tap to Enable Sound</button>
 
   <script>
     const btn = document.getElementById("playBtn");
     const video = document.getElementById("toyVideo");
 
-    btn.addEventListener("click", () => {
-      video.style.display = "block";
-      btn.style.display = "none";
-      video.play();
+    // Video starts silently
+    video.muted = true;
+    video.play();
+
+    // On tap — unmute + show controls
+    btn.addEventListener("click", async () => {
+      try {
+        video.muted = false;
+        video.controls = true;
+        await video.play();
+        btn.style.display = "none"; // Hide button after enabling sound
+      } catch (err) {
+        console.error("Playback error:", err);
+      }
     });
   </script>
+
 </body>
 </html>
